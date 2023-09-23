@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buổi 3</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .ab {
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #0074D9;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="ab">
+        <input type="text" id="inputString" placeholder="Nhập xâu kí tự">
+        <button onclick="calculateChanges()">Bai1</button>
+        <div id="result"></div>
+        <p id="time"></p>
+        <p id="memory"></p>
+    </div>
+
+    <div class="ab">
+        <button onclick="checkDuplicate()">Bai2</button>
+        <p id="result2"></p>
+    </div>
+    <div class="ab">
+        <button onclick="calculateJumps()">Tính kết quả</button>
+        <div id="result3"></div>
+        <p id="time3"></p>
+        <p id="memory3"></p>
+    </div>
+    <script>
+        function minChangesToMakePalindrome(s) {
+            let changes = 0;
+            for (let i = 0; i < Math.floor(s.length / 2); i++) {
+                if (s[i] !== s[s.length - 1 - i]) {
+                    changes++;
+                }
+            }
+            return changes;
+        }
+
+        function calculateChanges() {
+            const inputElement = document.getElementById("inputString");
+            const input = inputElement.value;
+            const resultElement = document.getElementById("result");
+            const timeElement = document.getElementById("time");
+            const memoryElement = document.getElementById("memory");
+
+            const startTime = performance.now();
+            const changesNeeded = minChangesToMakePalindrome(input);
+            const endTime = performance.now();
+            const memoryUsage = window.performance.memory;
+
+            resultElement.innerHTML = `Số lượng ký tự cần thay đổi để xâu trở thành đối xứng: ${changesNeeded}`;
+            timeElement.innerHTML = `Thời gian chạy: ${endTime - startTime}ms`;
+            memoryElement.innerHTML = `Bộ nhớ sử dụng: ${memoryUsage.usedJSHeapSize} bytes`;
+        }
+
+        function hasDuplicate(arr) {
+            const seen = new Set();
+            for (let i = 0; i < arr.length; i++) {
+                if (seen.has(arr[i])) {
+                    return true;
+                }
+                seen.add(arr[i]);
+            }
+            return false;
+        }
+
+        function checkDuplicate() {
+            const inputArray = [1, 3, 3, 4, 5, 6, 7, 8, 9, 10];
+            const resultElement = document.getElementById("result2");
+
+            const hasDuplicateElements = hasDuplicate(inputArray);
+
+            if (hasDuplicateElements) {
+                resultElement.textContent = "Mảng có phần tử trùng lặp.";
+            } else {
+                resultElement.textContent = "Mảng không có phần tử trùng lặp.";
+            }
+        }
+
+        function numberOfJumps(N, X, L) {
+            let jumps = 0;
+            let currentPos = 0;
+
+            for (let i = 0; i < N; i++) {
+                if (currentPos >= X) {
+                    return jumps;
+                }
+                currentPos += L[i];
+                jumps++;
+            }
+
+            while (currentPos < X) {
+                currentPos += L[N - 1];
+                jumps++;
+            }
+
+            return jumps;
+        }
+
+        function calculateJumps() {
+            const N = 3;
+            const X = 6;
+            const L = [3, 4, 5];
+
+            const startTime = performance.now();
+            const jumps = numberOfJumps(N, X, L);
+            const endTime = performance.now();
+            const memoryUsage = window.performance.memory;
+
+            const resultElement = document.getElementById("result3");
+            resultElement.innerHTML = `Số lần bóng nảy trước khi vượt qua tọa độ X: ${jumps}`;
+
+            const timeElement = document.getElementById("time3");
+            timeElement.innerHTML = `Thời gian chạy: ${endTime - startTime}ms`;
+
+            const memoryElement = document.getElementById("memory3");
+            memoryElement.innerHTML = `Bộ nhớ sử dụng: ${memoryUsage.usedJSHeapSize} bytes`;
+        }
+    </script>
+</body>
+</html>
